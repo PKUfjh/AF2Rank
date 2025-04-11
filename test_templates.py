@@ -21,10 +21,10 @@ parser.add_argument("--use_native", action='store_true', help="add the native st
 parser.add_argument("--mask_sidechains", action='store_true', help="mask out sidechain atoms except for C-Beta")
 parser.add_argument("--mask_sidechains_add_cb", action='store_true', help="mask out sidechain atoms except for C-Beta, and add C-Beta to glycines")
 parser.add_argument("--seq_replacement", default='', help="Amino acid residue to fill the decoy sequence with. Default keeps target sequence")
-parser.add_argument("--af2_dir", default="/n/home01/jroney/alphafold-latest/", help="AlphaFold code and weights directory")
+parser.add_argument("--af2_dir", default="/lustre/home/2001110077/software/alphafold/", help="AlphaFold code and weights directory")
 parser.add_argument("--decoy_dir", default="/n/home01/jroney/template_injection/decoy_set/", help="Rosetta decoy directory")
 parser.add_argument("--output_dir", default="/n/ovchinnikov_lab/Lab/af2rank/outputs/", help="Rosetta decoy directory")
-parser.add_argument("--tm_exec", default="/n/home01/jroney/tmscore/TMscore", help="TMScore executable")
+parser.add_argument("--tm_exec", default="/lustre/home/2001110077/software/TMscore/TMscore", help="TMScore executable")
 
 args = parser.parse_args()
 
@@ -347,6 +347,8 @@ else:
 # info of the form "target decoy_id"
 decoy_list = [x.split() for x in open(args.decoy_dir + "decoy_list.txt", 'r').read().split("\n")[:-1]] 
 
+print("decoy list",decoy_list)
+
 # parse all of the information about the decoys
 decoy_data = {}
 for field in decoy_fields_list[2:]:
@@ -401,6 +403,7 @@ for n in natives_list:
     dummy_decoy = Decoy(target=n, decoy_id="none.pdb", decoy_path="_", rmsd=-1, rosettascore=-1, gdt_ts=-1, tmscore=-1,danscore=-1)
     write_results(dummy_decoy, result, prot_native=prot_native if args.use_native else None, pdb_native=pdb_native if args.use_native else None)
 
+  print("decoy_dict", decoy_dict)
 
   # run the model with all of the decoys passed as templates
   for d in decoy_dict[n]:

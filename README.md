@@ -1,5 +1,34 @@
 # AF2Rank
 
+## Installation
+```bash
+The same with MSA_subsampling https://github.com/PKUfjh/af2_conformations
+```
+
+## Run
+```bash
+conda activate af2
+# know native structure
+python test_templates.py 1ake --target_list 1ake --seed 1 --recycles 1 --decoy_dir /lustre/home/2001110077/software/AF2Rank/examples/ --seq_replacement - --mask_sidechains_add_cb --use_native --output_dir ./outputs/
+# do not know native structure
+cd ./predicted_pdbs
+python split_pdb.py f0h_2BE6_A.pdb ./2BE6
+cp -r ./2BE6 ./decoy_dir/decoy_pdbs/
+cd ./decoy_dir
+python generate_decopy_list.py 2BE6 ./decoy_pdbs/2BE6/
+python test_templates.py 2BE6 --target_list 2BE6 --seed 1 --recycles 1 --decoy_dir /lustre/home/2001110077/software/AF2Rank/decoy_dir/ --seq_replacement - --mask_sidechains_add_cb --output_dir ./outputs/
+python compare.py result.csv summary.csv
+```
+
+## Troubleshooting
+```bash
+/lustre/home/2001110077/software/TMscore/TMscore: /lib64/libstdc++.so.6: version `GLIBCXX_3.4.29' not found (required by /lustre/home/2001110077/software/TMscore/TMscore)
+/lustre/home/2001110077/software/TMscore/TMscore: /lib64/libstdc++.so.6: version `GLIBCXX_3.4.26' not found (required by /lustre/home/2001110077/software/TMscore/TMscore)
+
+conda install -c conda-forge libstdcxx-ng
+export LD_LIBRARY_PATH=$CONDA_PREFIX/lib:$LD_LIBRARY_PATH
+```
+
 Code for the paper "State-of-the-Art Estimation of Protein
 Model Accuracy using AlphaFold" (https://www.biorxiv.org/content/10.1101/2022.03.11.484043v3). Experiments were run using the latest AlphaFold github commit as of 5/16/2022 (https://github.com/deepmind/alphafold on commit`b85ffe10799ca08cc62146f1dabb4e4ee6c0a580`).
 
