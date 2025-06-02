@@ -3,21 +3,23 @@
 ## Installation
 ```bash
 The same with MSA_subsampling https://github.com/PKUfjh/af2_conformations
+conda activate af2
+pip install MDAnalysis
 ```
 
 ## Run
 ```bash
 conda activate af2
-# know native structure
-python test_templates.py 1ake --target_list 1ake --seed 1 --recycles 1 --decoy_dir /lustre/home/2001110077/software/AF2Rank/examples/ --seq_replacement - --mask_sidechains_add_cb --use_native --output_dir ./outputs/
-# do not know native structure
+# example
 cd ./predicted_pdbs
 python split_pdb.py f0h_2BE6_A.pdb ./2BE6
-cp -r ./2BE6 ./decoy_dir/decoy_pdbs/
-cd ./decoy_dir
+cp -r ./2BE6 ../decoy_dir/decoy_pdbs/
+cd ../decoy_dir
 python generate_decopy_list.py 2BE6 ./decoy_pdbs/2BE6/
-python test_templates.py 2BE6 --target_list 2BE6 --seed 1 --recycles 1 --decoy_dir /lustre/home/2001110077/software/AF2Rank/decoy_dir/ --seq_replacement - --mask_sidechains_add_cb --output_dir ./outputs/
-python compare.py result.csv summary.csv
+cd ..
+python test_templates.py 2BE6 --target_list 2BE6 --seed 1 --recycles 1 --decoy_dir /mnt/nas/data/fanjh/software/AF2Rank/decoy_dir/ --seq_replacement - --mask_sidechains_add_cb --output_dir ./outputs/
+# 
+python compare.py /mnt/nas/data/fanjh/software/AF2Rank/outputs/2BE6/results/results_2BE6.csv summary.csv
 ```
 
 ## Troubleshooting
